@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Admin Auth</title>
+</head>
+
+<body>
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <h1 class="text-center pb-5">Admin Signup Page</h1>
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" aria-describedby="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="cpassword">
+                    </div>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).on('click', '.btn-primary', () => {
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        var cpassword = $("#cpassword").val();
+        if(password !== cpassword)
+        {
+            alert("Password not match")
+            return;
+        }
+        var data = {
+            name: name,
+            email: email,
+            password: password
+        }
+        console.log(data);
+        $.ajax({
+            url: '/admin-signup',
+            type: "POST",
+            data: data,
+            success: function (res, req) {
+                if (res.success) {
+                    alert(res.success);
+                    window.location.href = '/admin-login';
+                } else if (res.error) {
+                    alert(res.error);
+                    window.location.reload();
+                }
+            },
+        })
+    })
+</script>
+
+</html>

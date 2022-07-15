@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container p-5">
+        <div class="row">
+            <h3>Welcome, <%=name%></h3> <br>
+            <div class="pb-3" style="float: right;">
+                <button type="button" class="btn btn-danger btn_logout">Logout</button>
+            </div>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>User Type</th>
+                    <th>Action</th>
+                </tr>
+                <%for(var i=0;i< admin.length;i++){%>
+                    <tr>
+                        <td class="name">
+                            <%=admin[i].name%>
+                        </td>
+                        <td class="company">
+                            <%=admin[i].email%>
+                        </td>
+                        <td class="price">
+                            <%=admin[i].userType%>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-delete btn-danger btn-sm"
+                                value="<%=admin[i]._id%>">Delete</button>
+                        </td>
+
+                    </tr>
+                    <%}%>
+            </table>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function (req, res) {
+        $(document).on('click', '.btn-delete', function (req, res) {
+            var id = $(this).val();
+            console.log(id);
+            var data = { id: id }
+            const takeConfirm = confirm("Are you sure want to delete");
+            if(!takeConfirm)
+            {
+                return
+            }
+            $.ajax({
+                url: '/delete-admin',
+                type: "POST",
+                data: data,
+                success: function (req, res) {
+                    if (res.success) {
+                        alert(res.success)
+                        window.location.reload();
+                    } else if (res.error) {
+                        alert(res.error)
+                        window.location.reload();
+                    }
+                }
+            })
+        })
+        $(document).on('click','.btn_logout',function(req,res){
+        window.location.href ="/admin-logout";
+    })
+    })
+</script>
+
+</html>
